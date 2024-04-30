@@ -1,0 +1,29 @@
+---
+const { tag, withBg = false, classes='' } = Astro.props
+
+let icon = ''
+
+switch (tag) {
+	case 'Programming':
+		icon = 'icon-[solar--programming-broken]'
+		break
+	case 'Kitchen':
+		icon = 'icon-[solar--chef-hat-broken]'
+		break
+	case 'Thoughts':
+		icon = 'icon-[solar--chat-dots-broken]'
+		break
+	default:
+		icon = ''
+		break
+}
+
+const className = 'w-6 h-6'
+---
+
+<div
+	class={`${withBg && 'bg-black/20 rounded text-white p-2'} flex items-center gap-2 ${classes}`}
+>
+	{icon.trim().length !== 0 && <span class:list={[icon, className]} />}
+	{tag}
+</div>

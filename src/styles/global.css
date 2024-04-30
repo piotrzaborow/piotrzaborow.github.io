@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    article blockquote {
+        @apply border-l-8 border-regal-blue bg-regal-blue/75 mx-10 p-5 text-white/90 italic text-lg;
+    }
+
+    article a {
+        @apply text-regal-blue underline;
+    }
+
+    article p {
+        @apply my-5 px-10;
+    }
+
+    article h2 {
+        @apply text-3xl font-bold text-regal-blue my-5 px-10;
+    }
+
+    article h3 {
+        @apply text-2xl font-bold text-regal-blue my-5 px-10;
+    }
+
+    article ul{
+        @apply list-inside list-disc my-5 px-10;
+    }
+
+    article ol{
+        @apply list-inside list-decimal my-5 px-10;
+    }
+}

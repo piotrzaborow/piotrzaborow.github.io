@@ -1,0 +1,79 @@
+---
+import BaseHead from '../components/BaseHead.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import Tag from '../components/Tag.astro'
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts'
+import { getCollection } from 'astro:content'
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+)
+
+console.log(posts)
+
+const groupedPostsByDate = posts.reduce((acc, post) => {
+	const year = post.id.split('/')[0]
+
+	if (!acc[year]) {
+		acc[year] = []
+	}
+	acc[year].push(post)
+	return acc
+}, {})
+---
+
+<!doctype html>
+<html lang='en'>
+	<head>
+		<BaseHead title={SITE_TITLE} />
+	</head>
+	<body class='bg-gray-100 relative'>
+		<main class='min-h-[calc(100vh-124px)]'>
+			<Header />
+			<div class='bg-regal-blue text-white p-8 2xl:px-40'>
+				<h3 class='text-3xl'>My notebook in the internet</h3>
+				<div>
+					{SITE_DESCRIPTION}
+				</div>
+			</div>
+			<div class='2xl:mx-40'>
+				{
+					Object.keys(groupedPostsByDate)
+						.sort(
+							(a, b) =>
+								Number.parseFloat(b) - Number.parseFloat(a),
+						)
+						.map((year) => (
+							<section class='grid grid-cols-5 my-5 border-b'>
+								<h2 class='text-2xl mx-2 p-5 col-span-1 lg:col-span-2'>
+									{year}
+								</h2>
+								<ul class='col-span-4 lg:col-span-3'>
+									{groupedPostsByDate[year].map((post) => (
+										<a
+											href={`/post/${post.slug}/`}
+											class='group grid grid-rows-2 lg:grid-rows-1 border-b last:border-0 text-lg w-full p-5 self-center '
+										>
+											<span class='self-center row-span-1 font-semibold group-hover:text-regal-blue group-hover:underline'>
+												{post.data.title}
+											</span>
+											<span class='self-center'>
+												<Tag
+													tag={post.data.tag}
+													classes={
+														'text-regal-blue my-2'
+													}
+												/>
+											</span>
+										</a>
+									))}
+								</ul>
+							</section>
+						))
+				}
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
